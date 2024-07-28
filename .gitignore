@@ -1,0 +1,4 @@
+node_modules
+shared_data
+.wwebjs_cache
+package-lock.json
