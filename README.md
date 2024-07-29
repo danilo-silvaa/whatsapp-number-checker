@@ -15,13 +15,44 @@ Contribuições são bem-vindas! Se você encontrar problemas ou tiver melhorias
 
 ## Endpoints da API
 
-- [Checar Existência de Número](#checar-existência-de-número)
+- [Exibir o código QR do WhatsApp](#exibir-o-código-QR-do-WhatsApp)
+- [Checar existência de número](#checar-existência-de-número)
 
-## Checar Existência de Número
+## Exibir o código QR do WhatsApp
 
 * **URL**
 
-  `/check`
+  `/qr`
+
+* **Método**
+
+  `GET`
+
+* **Retornos**
+  
+  **Status Code:** 200
+  
+    ```html
+    <img src="data:image/png;base64,..." />
+    ```
+	
+  **Status Code:** 200
+  
+    ```
+    O cliente WhatsApp já está logado. Não é necessário código QR.
+    ```
+    
+  **Status Code:** 200
+  
+    ```
+    QR code não disponível. Tente novamente mais tarde.
+    ``` 
+
+## Checar existência de número
+
+* **URL**
+
+  `/api/check`
 
 * **Método**
 

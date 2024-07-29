@@ -1,16 +1,27 @@
 const express = require('express');
+const qrcode = require('qrcode');
 const client = require('../config/WhatsappConfig');
-const numberRoutes = require('../routes/api');
-const { setClientReady } = require('../state/WhatsappState');
+const apiRoutes = require('../routes/api');
+const webRoutes = require('../routes/web');
+const { setClientReady, setQrCode } = require('../state/WhatsappState');
 
 const app = express();
 app.use(express.json());
-app.use('/api', numberRoutes);
+
+app.use('/api', apiRoutes);
+app.use('/', webRoutes);
 
 client.on('qr', (qr) => {
-    console.log('Scan the QR code below:');
-    require('qrcode-terminal').generate(qr, { small: true });
     console.log('QR RECEIVED', qr);
+
+    qrcode.toDataURL(qr, (err, url) => {
+        if (err) {
+            console.error('Failed to convert QR code to data URL:', err);
+            return;
+        }
+        
+        setQrCode(url.split(',')[1]);
+    });
 });
 
 client.on('ready', () => {
@@ -20,11 +31,13 @@ client.on('ready', () => {
 
 client.on('auth_failure', (msg) => {
     setClientReady(false);
+    setQrCode(null);
     console.error('AUTHENTICATION FAILURE', msg);
 });
 
 client.on('disconnected', (reason) => {
     setClientReady(false);
+    setQrCode(null);
     console.log('Client was logged out', reason);
 });
 

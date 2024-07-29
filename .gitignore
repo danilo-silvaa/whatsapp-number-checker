@@ -1,4 +1,4 @@
 node_modules
-shared_data
 .wwebjs_cache
+.wwebjs_auth
 package-lock.json
